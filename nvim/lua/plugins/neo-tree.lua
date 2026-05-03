@@ -12,6 +12,19 @@ return {
     { "<leader>E", "<cmd>Neotree reveal<CR>",            desc = "File explorer (reveal current)" },
     { "<leader>fe", "<cmd>Neotree float toggle<CR>",     desc = "File explorer (floating)" },
   },
+  init = function()
+    -- Replace netrw entirely with neo-tree
+    vim.g.loaded_netrw = 1
+    vim.g.loaded_netrwPlugin = 1
+    -- If nvim is started with a directory arg (e.g. `nvim .`), eagerly load neo-tree
+    if vim.fn.argc(-1) == 1 then
+      local arg = vim.fn.argv(0)
+      local stat = vim.uv.fs_stat(arg)
+      if stat and stat.type == "directory" then
+        require("lazy").load({ plugins = { "neo-tree.nvim" } })
+      end
+    end
+  end,
   opts = {
     close_if_last_window = true,
     popup_border_style = "rounded",
@@ -19,7 +32,7 @@ return {
     enable_diagnostics = true,
     filesystem = {
       follow_current_file = { enabled = true },
-      hijack_netrw_behavior = "open_default",
+      hijack_netrw_behavior = "open_current",
       filtered_items = {
         hide_dotfiles = false,
         hide_gitignored = true,
