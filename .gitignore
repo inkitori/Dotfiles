@@ -1,2 +1,6 @@
 .DS_Store
 *.backup.*
+
+# Local Claude context (memory + transcripts may contain sensitive content)
+.claude/memory/
+.claude/transcripts/

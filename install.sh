@@ -12,8 +12,8 @@ TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 LINKS=(
   "nvim:$HOME/.config/nvim"
   "ghostty:$HOME/.config/ghostty"
+  "zsh/.zshrc:$HOME/.zshrc"
   # examples for future use:
-  # "zsh/.zshrc:$HOME/.zshrc"
   # "starship/starship.toml:$HOME/.config/starship.toml"
 )
 
