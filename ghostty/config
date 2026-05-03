@@ -1,0 +1,29 @@
+# dark pink/mauve theme — plays nicely with TUI apps that assume a dark bg
+theme = Rose Pine
+
+# force an actually-pink canvas (overrides the theme's bg/fg)
+background = #a85e7a
+foreground = #fff0f4
+cursor-color = #ffb0c8
+selection-background = #c87898
+selection-foreground = #ffffff
+
+# get a Nerd Font so icons render — install via brew first
+font-family = JetBrainsMono Nerd Font
+font-size = 14
+
+# the glassy macOS look
+background-opacity = 0.70
+background-blur = macos-glass-regular
+
+# breathing room
+window-padding-x = 16
+window-padding-y = 12
+window-padding-balance = true
+
+# hide ghostty's tab bar — cmux has its own vertical tabs
+window-show-tab-bar = never
+
+# nice cursor
+cursor-style = block
+cursor-style-blink = false
