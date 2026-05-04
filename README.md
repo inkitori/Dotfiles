@@ -1,7 +1,7 @@
-# Dotfiles
+# dotfiles
 
 Personal configuration files, version-controlled and symlinked into place.
-Real files live here under `~/Dotfiles/<app>/`. Running `./install.sh` symlinks
+Real files live here under `~/dotfiles/<app>/`. Running `./install.sh` symlinks
 each app's directory into the right spot under `$HOME`.
 
 ## What's here
@@ -29,8 +29,8 @@ each app's directory into the right spot under `$HOME`.
 ## First-time setup on a fresh machine
 
 ```sh
-git clone <your-remote> ~/Dotfiles
-cd ~/Dotfiles
+git clone <your-remote> ~/dotfiles
+cd ~/dotfiles
 ./bootstrap.sh   # installs Homebrew + CLI tools (nvim, ghostty, fzf, etc.)
 ./install.sh     # symlinks configs into ~/.config/* and ~/.zshrc
 ```
@@ -65,7 +65,7 @@ The full mapping is the `LINKS` array near the top of `install.sh`.
 
 ## Adding a new app
 
-1. Move (or copy) the app's config into `~/Dotfiles/<app>/`.
+1. Move (or copy) the app's config into `~/dotfiles/<app>/`.
 2. Add one line to the `LINKS` array in `install.sh`:
    ```bash
    "<app>:$HOME/.config/<app>"
@@ -133,12 +133,12 @@ Layout:
 ```
 
 To **continue a Claude session in this directory**:
-- `cd ~/Dotfiles && claude --continue` — resumes the most recent session for
+- `cd ~/dotfiles && claude --continue` — resumes the most recent session for
   this project dir. Claude looks up sessions by current working directory, so
-  starting from `~/Dotfiles` keeps the context here together over time.
+  starting from `~/dotfiles` keeps the context here together over time.
 
-The `~/.claude/projects/-Users-enyouki-Dotfiles/` directory is the Claude side
-of this — it's set up to point at `~/Dotfiles/.claude/` so memory stays in
+The `~/.claude/projects/-Users-enyouki-dotfiles/` directory is the Claude side
+of this — it's set up to point at `~/dotfiles/.claude/` so memory stays in
 sync.
 
 ## Tools installed by bootstrap.sh

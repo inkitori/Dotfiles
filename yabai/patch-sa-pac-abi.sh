@@ -5,7 +5,7 @@
 #
 # Usage:
 #   sudo yabai --load-sa     # may fail with "protection failure" — run anyway to install loader
-#   sudo ~/Dotfiles/yabai/patch-sa-pac-abi.sh
+#   sudo ~/dotfiles/yabai/patch-sa-pac-abi.sh
 #   sudo yabai --load-sa     # should succeed silently this time
 set -euo pipefail
 

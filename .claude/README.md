@@ -1,7 +1,7 @@
 # Claude Context (local-only)
 
 This directory holds Claude Code memory and chat transcripts so a future Claude
-session started from `~/Dotfiles/` can pick up where this one left off.
+session started from `~/dotfiles/` can pick up where this one left off.
 
 **This directory is gitignored.** It contains potentially sensitive
 conversation content; nothing here gets pushed.
@@ -25,22 +25,22 @@ Claude Code keys sessions by the directory you launched it in. So:
 
 - Sessions started from `~/.config/nvim/` live at
   `~/.claude/projects/-Users-enyouki--config-nvim/`.
-- Sessions started from `~/Dotfiles/` live at
-  `~/.claude/projects/-Users-enyouki-Dotfiles/`.
+- Sessions started from `~/dotfiles/` live at
+  `~/.claude/projects/-Users-enyouki-dotfiles/`.
 
-To continue **this** conversation in `~/Dotfiles/`:
+To continue **this** conversation in `~/dotfiles/`:
 
 ```sh
-cd ~/Dotfiles
+cd ~/dotfiles
 claude --continue
 ```
 
 Setup that's already in place:
 
-- `~/.claude/projects/-Users-enyouki-Dotfiles/<session>.jsonl` — copied from
+- `~/.claude/projects/-Users-enyouki-dotfiles/<session>.jsonl` — copied from
   the original session so `claude --continue` can resume it.
-- `~/.claude/projects/-Users-enyouki-Dotfiles/memory/` — symlinked to
-  `~/Dotfiles/.claude/memory/` so memory stays in one canonical place.
+- `~/.claude/projects/-Users-enyouki-dotfiles/memory/` — symlinked to
+  `~/dotfiles/.claude/memory/` so memory stays in one canonical place.
 
 ## Refreshing the snapshot
 

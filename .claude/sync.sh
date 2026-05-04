@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Refresh ~/Dotfiles/.claude/{memory,transcripts}/ from a Claude project dir.
+# Refresh ~/dotfiles/.claude/{memory,transcripts}/ from a Claude project dir.
 # Usage: ./sync.sh [SOURCE_PROJECT_DIR]
 #   default SOURCE: ~/.claude/projects/-Users-enyouki--config-nvim
 

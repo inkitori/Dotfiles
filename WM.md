@@ -326,7 +326,7 @@ rm -f ~/Library/LaunchAgents/{com.asmvik.yabai,com.koekeishiya.skhd,homebrew.mxc
 # remove sudoers entry (if you set one up)
 sudo rm -f /private/etc/sudoers.d/yabai
 
-# remove config symlinks (real configs stay in ~/Dotfiles/ — re-installable)
+# remove config symlinks (real configs stay in ~/dotfiles/ — re-installable)
 rm -f ~/.config/{yabai,skhd,borders} ~/.config/colors.sh
 
 # uninstall the binaries (optional — they take ~minimal disk)
