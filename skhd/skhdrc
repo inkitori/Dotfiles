@@ -75,12 +75,14 @@ alt - n : yabai -m window --focus next || yabai -m window --focus first
 alt - p : yabai -m window --focus prev || yabai -m window --focus last
 
 # ---------------------------------------------------------------------------
-# swap — exchange positions, preserving split
+# swap — exchange positions, preserving split. Falls through to --toggle split
+# when there's no neighbor in that direction (e.g. pressing alt+shift+j on a
+# left/right pair flips them to top/bottom instead of no-op'ing).
 # ---------------------------------------------------------------------------
-alt + shift - h : yabai -m window --swap west
-alt + shift - j : yabai -m window --swap south
-alt + shift - k : yabai -m window --swap north
-alt + shift - l : yabai -m window --swap east
+alt + shift - h : yabai -m window --swap west  || yabai -m window --toggle split
+alt + shift - j : yabai -m window --swap south || yabai -m window --toggle split
+alt + shift - k : yabai -m window --swap north || yabai -m window --toggle split
+alt + shift - l : yabai -m window --swap east  || yabai -m window --toggle split
 
 # ---------------------------------------------------------------------------
 # warp — move window AND reparent in the bsp tree (changes split structure)
