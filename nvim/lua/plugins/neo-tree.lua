@@ -49,5 +49,14 @@ return {
     default_component_configs = {
       indent = { with_markers = true, indent_marker = "│", last_indent_marker = "└" },
     },
+    event_handlers = {
+      {
+        event = "neo_tree_buffer_enter",
+        handler = function()
+          vim.opt_local.number = true
+          vim.opt_local.relativenumber = true
+        end,
+      },
+    },
   },
 }

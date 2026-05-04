@@ -36,3 +36,4 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.fn.winrestview(save)
   end,
 })
+
