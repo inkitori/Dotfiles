@@ -34,11 +34,12 @@
 #   alt - c                   focus code space         (C = VS Code)
 #   alt - a                   focus slack space
 #   alt - i                   focus claude space       (I = AI)
+#   alt - o                   quick-open inkcal.sh (launches if needed) + focus
 #   ctrl + alt - left/right   focus prev / next space
 #
 # Spaces — send focused window (and follow)
-#   alt + shift - 1 .. 0                by number
-#   ctrl + alt + shift - f/d/t/s/c/a/i  by label (same letters as focus)
+#   alt + shift - 1 .. 0                  by number
+#   ctrl + alt + shift - f/d/t/s/c/a/i/o  by label (same letters as focus)
 #
 # Space layout
 #   alt + shift - s           toggle bsp ↔ stack
@@ -138,6 +139,10 @@ alt - c : yabai -m space --focus code
 alt - a : yabai -m space --focus slack
 alt - i : yabai -m space --focus claude
 
+# quick-open: launch inkcal.sh if not running (rule routes it to inkcal space),
+# then focus the space. `open -a` is idempotent — activates if already running.
+alt - o : yabai -m space --focus inkcal; open -a inkcal.sh
+
 # spaces — prev/next (alt-arrow stays free for macOS word-jumping in text)
 ctrl + alt - left  : yabai -m space --focus prev
 ctrl + alt - right : yabai -m space --focus next
@@ -163,7 +168,8 @@ ctrl + alt + shift - t : yabai -m window --space cmux;    yabai -m space --focus
 ctrl + alt + shift - s : yabai -m window --space spotify; yabai -m space --focus spotify
 ctrl + alt + shift - c : yabai -m window --space code;    yabai -m space --focus code
 ctrl + alt + shift - a : yabai -m window --space slack;   yabai -m space --focus slack
-ctrl + alt + shift - i : yabai -m window --space claude;  yabai -m space --focus claude
+ctrl + alt + shift - i : yabai -m window --space claude;   yabai -m space --focus claude
+ctrl + alt + shift - o : yabai -m window --space inkcal; yabai -m space --focus inkcal
 
 # ---------------------------------------------------------------------------
 # space layout — rotate, mirror, bsp ↔ stack

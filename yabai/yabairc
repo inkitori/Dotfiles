@@ -4,8 +4,8 @@
 #   - borders  (~/Dotfiles/borders/bordersrc)  pink border around focused window
 #   - colors   (~/.config/colors.sh)           shared palette sourced below
 #
-# This config sets up bsp tiling, seven labeled spaces (one per pinned app —
-# Firefox, Discord, cmux, Spotify, VS Code, Slack, Claude), gentle animations,
+# This config sets up bsp tiling, eight labeled spaces (one per pinned app —
+# Firefox, Discord, cmux, Spotify, VS Code, Slack, Claude, inkcal.sh), gentle animations,
 # inactive-window fade, and a mouse-drag-to-swap gesture. Apple-protected
 # windows (System Settings, Finder, …) are forced to float.
 #
@@ -80,7 +80,7 @@ yabai -m rule --add title="(Preferences|Settings|Welcome)$" manage=off
 # `space --create` requires SA. Idempotent: skips if you already have ≥ 7.
 # Without this, focusing a missing label (e.g. alt-a slack) silently no-ops,
 # and rules can't move windows to nonexistent target spaces.
-NEEDED_SPACES=7
+NEEDED_SPACES=8
 HAVE_SPACES=$(yabai -m query --spaces | jq 'length')
 while [ "$HAVE_SPACES" -lt "$NEEDED_SPACES" ]; do
     yabai -m space --create
@@ -95,6 +95,17 @@ yabai -m space 4 --label spotify 2>/dev/null
 yabai -m space 5 --label code    2>/dev/null
 yabai -m space 6 --label slack   2>/dev/null
 yabai -m space 7 --label claude  2>/dev/null
+yabai -m space 8 --label inkcal 2>/dev/null
+
+# ── force labeled spaces onto the primary display (SA required) ──────────────
+# Multi-monitor: each space lives on exactly one display, and a newly-created
+# space lands on whichever display was focused at create time. Without this
+# loop, an app's space can end up on the secondary monitor, so `alt - <letter>`
+# jumps focus across displays. Re-pinning to display 1 every reload keeps all
+# pinned-app spaces on the primary monitor regardless of where they were born.
+for label in firefox discord cmux spotify code slack claude inkcal; do
+    yabai -m space "$label" --display 1 2>/dev/null
+done
 
 # ── app → space pinning (SA required to actually move windows) ───────────────
 yabai -m rule --add app="^Firefox$"  space=firefox
@@ -104,6 +115,7 @@ yabai -m rule --add app="^Spotify$"  space=spotify
 yabai -m rule --add app="^Code$"     space=code
 yabai -m rule --add app="^Slack$"    space=slack
 yabai -m rule --add app="^Claude$"   space=claude
+yabai -m rule --add app="^inkcal\.sh$" space=inkcal
 
 # ── auto-launch pinned apps that should always be running ────────────────────
 # Hidden launch (-gj) so it doesn't steal focus during yabai startup; the rule

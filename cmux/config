@@ -1,0 +1,16 @@
+# cmux uses libghostty for terminal rendering and reads its OWN ghostty-format
+# config from ~/Library/Application Support/com.cmuxterm.app/config (NOT
+# ~/.config/ghostty/config). Without this file, cmux defaults to fully opaque
+# panes regardless of your Ghostty settings — keep this in sync with
+# ../ghostty/config when you want the look to match.
+
+theme = Everforest Dark Hard
+
+font-family = JetBrainsMono Nerd Font
+font-size = 14
+
+# Match Ghostty's glassy look. Note that only the terminal pane area honors
+# these — cmux's own chrome (sidebar, tab strip) is controlled separately via
+# sidebarAppearance in ~/.config/cmux/settings.json.
+background-opacity = 0.92
+background-blur = true

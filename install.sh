@@ -17,6 +17,8 @@ LINKS=(
   "yabai:$HOME/.config/yabai"
   "skhd:$HOME/.config/skhd"
   "borders:$HOME/.config/borders"
+  # cmux reads a ghostty-format config from its app-support dir, not ~/.config/ghostty
+  "cmux/config:$HOME/Library/Application Support/com.cmuxterm.app/config"
   # examples for future use:
   # "starship/starship.toml:$HOME/.config/starship.toml"
 )
