@@ -1,0 +1,134 @@
+# skhd — keyboard daemon driving yabai.
+#
+# Modifier convention (chosen to avoid macOS / browser / editor collisions):
+#   alt              -> focus / single-window ops
+#   alt + shift      -> swap windows
+#   alt + ctrl       -> warp / reorder windows in tree
+#   ctrl + alt       -> spaces (focus + send-to)
+#   alt + cmd        -> resize
+#   alt + ctrl + r   -> reload everything
+#
+# Tip: cmd is reserved for app-level shortcuts (cmd-c, cmd-w, etc.) — yabai
+# never claims it. Same for plain ctrl (used by terminals + readline).
+
+# ---------------------------------------------------------------------------
+# focus
+# ---------------------------------------------------------------------------
+alt - h : yabai -m window --focus west  || yabai -m display --focus west
+alt - j : yabai -m window --focus south || yabai -m display --focus south
+alt - k : yabai -m window --focus north || yabai -m display --focus north
+alt - l : yabai -m window --focus east  || yabai -m display --focus east
+
+# cycle through stack of windows
+alt - n : yabai -m window --focus next || yabai -m window --focus first
+alt - p : yabai -m window --focus prev || yabai -m window --focus last
+
+# ---------------------------------------------------------------------------
+# swap (preserves split, just exchanges position)
+# ---------------------------------------------------------------------------
+alt + shift - h : yabai -m window --swap west
+alt + shift - j : yabai -m window --swap south
+alt + shift - k : yabai -m window --swap north
+alt + shift - l : yabai -m window --swap east
+
+# ---------------------------------------------------------------------------
+# warp (move + reparent in the bsp tree)
+# ---------------------------------------------------------------------------
+alt + ctrl - h : yabai -m window --warp west
+alt + ctrl - j : yabai -m window --warp south
+alt + ctrl - k : yabai -m window --warp north
+alt + ctrl - l : yabai -m window --warp east
+
+# ---------------------------------------------------------------------------
+# resize (alt+cmd avoids the alt+shift swap collision)
+# ---------------------------------------------------------------------------
+alt + cmd - h : yabai -m window --resize left:-48:0  || yabai -m window --resize right:-48:0
+alt + cmd - l : yabai -m window --resize right:48:0  || yabai -m window --resize left:48:0
+alt + cmd - k : yabai -m window --resize top:0:-48   || yabai -m window --resize bottom:0:-48
+alt + cmd - j : yabai -m window --resize bottom:0:48 || yabai -m window --resize top:0:48
+alt + cmd - 0 : yabai -m space  --balance
+
+# ---------------------------------------------------------------------------
+# zoom / float / split
+# ---------------------------------------------------------------------------
+alt - d      : yabai -m window --toggle zoom-parent
+alt - f      : yabai -m window --toggle zoom-fullscreen
+alt + shift - f : yabai -m window --toggle native-fullscreen
+alt - e      : yabai -m window --toggle split
+alt - t      : yabai -m window --toggle float --grid 8:8:1:1:6:6
+alt - v      : yabai -m window --insert south
+alt - z      : yabai -m window --insert east
+
+# ---------------------------------------------------------------------------
+# spaces — focus + send-to (ctrl+alt avoids ctrl+shift+N tab shortcuts)
+# ---------------------------------------------------------------------------
+ctrl + alt - 1 : yabai -m space --focus 1
+ctrl + alt - 2 : yabai -m space --focus 2
+ctrl + alt - 3 : yabai -m space --focus 3
+ctrl + alt - 4 : yabai -m space --focus 4
+ctrl + alt - 5 : yabai -m space --focus 5
+ctrl + alt - 6 : yabai -m space --focus 6
+ctrl + alt - 7 : yabai -m space --focus 7
+ctrl + alt - 8 : yabai -m space --focus 8
+ctrl + alt - 9 : yabai -m space --focus 9
+ctrl + alt - 0 : yabai -m space --focus 10
+
+# send window to space N and follow it
+ctrl + alt + shift - 1 : yabai -m window --space 1; yabai -m space --focus 1
+ctrl + alt + shift - 2 : yabai -m window --space 2; yabai -m space --focus 2
+ctrl + alt + shift - 3 : yabai -m window --space 3; yabai -m space --focus 3
+ctrl + alt + shift - 4 : yabai -m window --space 4; yabai -m space --focus 4
+ctrl + alt + shift - 5 : yabai -m window --space 5; yabai -m space --focus 5
+ctrl + alt + shift - 6 : yabai -m window --space 6; yabai -m space --focus 6
+ctrl + alt + shift - 7 : yabai -m window --space 7; yabai -m space --focus 7
+ctrl + alt + shift - 8 : yabai -m window --space 8; yabai -m space --focus 8
+ctrl + alt + shift - 9 : yabai -m window --space 9; yabai -m space --focus 9
+ctrl + alt + shift - 0 : yabai -m window --space 10; yabai -m space --focus 10
+
+# fast prev/next space
+ctrl + alt - left  : yabai -m space --focus prev
+ctrl + alt - right : yabai -m space --focus next
+
+# focus by label (mirrors app→space bindings in yabairc)
+ctrl + alt - f : yabai -m space --focus firefox
+ctrl + alt - d : yabai -m space --focus discord
+ctrl + alt - c : yabai -m space --focus cmux
+ctrl + alt - s : yabai -m space --focus spotify
+ctrl + alt - v : yabai -m space --focus code
+ctrl + alt - a : yabai -m space --focus slack
+
+# send focused window to a labeled space + follow
+ctrl + alt + shift - f : yabai -m window --space firefox; yabai -m space --focus firefox
+ctrl + alt + shift - d : yabai -m window --space discord; yabai -m space --focus discord
+ctrl + alt + shift - c : yabai -m window --space cmux;    yabai -m space --focus cmux
+ctrl + alt + shift - s : yabai -m window --space spotify; yabai -m space --focus spotify
+ctrl + alt + shift - v : yabai -m window --space code;    yabai -m space --focus code
+ctrl + alt + shift - a : yabai -m window --space slack;   yabai -m space --focus slack
+
+# ---------------------------------------------------------------------------
+# layout helpers
+# ---------------------------------------------------------------------------
+alt + shift - r : yabai -m space --rotate 270
+alt + shift - x : yabai -m space --mirror x-axis
+alt + shift - y : yabai -m space --mirror y-axis
+
+# toggle bsp <-> stack
+alt + shift - s : \
+    if [[ $(yabai -m query --spaces --space | jq -r '.type') == "bsp" ]]; then \
+        yabai -m space --layout stack; \
+    else \
+        yabai -m space --layout bsp; \
+    fi
+
+# ---------------------------------------------------------------------------
+# launch terminal
+# ---------------------------------------------------------------------------
+alt - return : open -na Ghostty
+
+# ---------------------------------------------------------------------------
+# reload everything
+# ---------------------------------------------------------------------------
+alt + ctrl - r : \
+    yabai --restart-service; \
+    skhd --restart-service; \
+    osascript -e 'display notification "yabai + skhd reloaded" with title "wm"'

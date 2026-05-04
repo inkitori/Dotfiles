@@ -1,0 +1,16 @@
+#!/bin/bash
+# JankyBorders — paints a border around every window so you can see what's
+# focused without yabai having to dim everything else.
+#
+# Active = pink (matches Ghostty + sketchybar accent).
+# Inactive = soft muted overlay so unfocused windows recede.
+options=(
+    style=round
+    width=4.0
+    hidpi=on
+    active_color=0xffa85e7a
+    inactive_color=0x66393552
+    background_color=0x00000000
+    blur_radius=0.0
+)
+borders "${options[@]}"

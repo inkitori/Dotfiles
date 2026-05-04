@@ -1,0 +1,70 @@
+#!/usr/bin/env sh
+# yabai window manager — bsp tiling, paired with borders for active-window highlight.
+#
+# Some features (e.g. window_animation, mouse_drop_action swap) need the
+# yabai scripting addition. To enable, after install:
+#   sudo visudo -f /private/etc/sudoers.d/yabai
+#     <your-user> ALL=(root) NOPASSWD: sha256:<hash> /opt/homebrew/bin/yabai --load-sa
+#   sudo yabai --load-sa
+# Hash via:  shasum -a 256 $(which yabai)
+# See: https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)#configure-scripting-addition
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa" 2>/dev/null || true
+
+source "$HOME/.config/colors.sh"
+
+# global settings
+yabai -m config                                 \
+    mouse_follows_focus          off            \
+    focus_follows_mouse          autofocus      \
+    window_origin_display        default        \
+    window_placement             second_child   \
+    window_zoom_persist          off            \
+    window_shadow                float          \
+    window_animation_duration    0.0            \
+    window_opacity_duration      0.0            \
+    active_window_opacity        1.0            \
+    normal_window_opacity        1.0            \
+    window_opacity               off            \
+    insert_feedback_color        "$COLOR_ACCENT" \
+    split_ratio                  0.50           \
+    split_type                   auto           \
+    auto_balance                 off            \
+    top_padding                  12             \
+    bottom_padding               12             \
+    left_padding                 12             \
+    right_padding                12             \
+    window_gap                   10             \
+    layout                       bsp            \
+    mouse_modifier               fn             \
+    mouse_action1                move           \
+    mouse_action2                resize         \
+    mouse_drop_action            swap
+
+# Apps that should always float
+yabai -m rule --add app="^(System Settings|System Information|Activity Monitor|FaceTime|Screen Sharing|Calculator|Stickies|TinkerTool|Progressive Downloader|Transmission|Airflow|Raycast|Karabiner-Elements|LinearMouse|Finder|Webull Desktop|App Store|Software Update)$" manage=off
+yabai -m rule --add title="(Preferences|Settings|Welcome)$" manage=off
+
+# Space labels — referenced by app rules + label-based focus binds in skhdrc.
+# Silently no-ops for spaces that don't exist yet — create them in Mission Control.
+yabai -m space 1 --label firefox 2>/dev/null
+yabai -m space 2 --label discord 2>/dev/null
+yabai -m space 3 --label cmux    2>/dev/null
+yabai -m space 4 --label spotify 2>/dev/null
+yabai -m space 5 --label code    2>/dev/null
+yabai -m space 6 --label slack   2>/dev/null
+
+# App → space bindings (requires scripting addition to actually move windows)
+yabai -m rule --add app="^Firefox$"  space=firefox
+yabai -m rule --add app="^Discord$"  space=discord
+yabai -m rule --add app="^cmux$"     space=cmux
+yabai -m rule --add app="^Spotify$"  space=spotify
+yabai -m rule --add app="^Code$"     space=code
+yabai -m rule --add app="^Slack$"    space=slack
+
+# Workaround: re-assert bsp layout when Ghostty windows come/go.
+# Ghostty occasionally lands a window before yabai sees it, leaving the space
+# in a stale state — re-issuing the layout forces a re-tile.
+yabai -m signal --add app='^Ghostty$' event=window_created   action='yabai -m space --layout bsp'
+yabai -m signal --add app='^Ghostty$' event=window_destroyed action='yabai -m space --layout bsp'
+
+echo "yabai configuration loaded.."

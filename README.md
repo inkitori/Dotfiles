@@ -10,8 +10,15 @@ each app's directory into the right spot under `$HOME`.
   LSP, completion, treesitter, telescope, neo-tree, etc.). See
   [`nvim/README.md`](nvim/README.md) for keymaps, daily workflow, and how to
   add/configure plugins.
+- **Window manager stack** — `yabai/`, `skhd/`, `borders/`.
+  Tiling WM + hotkeys + window-border highlighter, all sharing
+  one rose-pine + pink palette via `colors.sh`. See [`WM.md`](WM.md) for
+  setup (incl. the SIP / scripting-addition decision), keybind reference,
+  customization, and troubleshooting.
 - `ghostty/` → `~/.config/ghostty` — Ghostty terminal (Rose Pine + custom pink,
   0.70 opacity, macOS glass blur).
+- `ghostty/colors.sh` → `~/.config/colors.sh` — shared palette sourced by
+  yabai and borders. Edit once, the whole stack re-themes.
 - `zsh/.zshrc` → `~/.zshrc` — minimal zsh setup: aliases, PATH, modern CLI tool
   initializers (starship, zoxide, fzf, direnv, eza, bat).
 - `.claude/` — local-only Claude Code context (memory + transcripts).
@@ -35,7 +42,13 @@ Then:
 3. Inside nvim: `:MasonToolsInstall` — installs LSP servers, formatters, and
    linters. Wait for the bottom-of-screen progress to settle.
 
-You're done. See [`nvim/README.md`](nvim/README.md) for usage.
+You're done with the editor side. For the **window manager** (yabai + skhd
++ borders), there's one more round of setup that can't be
+scripted (Accessibility grants in System Settings, and an optional partial
+SIP disable in Recovery Mode for animations) — see [`WM.md`](WM.md).
+
+See [`nvim/README.md`](nvim/README.md) for editor usage and
+[`WM.md`](WM.md) for the WM keybind reference.
 
 ## install.sh — how it works
 
@@ -89,6 +102,22 @@ The pink (`#a85e7a`) background, `0.70` opacity, and macOS glass blur are
 deliberate — Neovim is configured with a transparent background to show this
 through.
 
+### Window manager
+
+See [`WM.md`](WM.md) for the full reference. TL;DR keybinds:
+
+- `alt + h/j/k/l` — focus window in direction
+- `alt + shift + h/j/k/l` — swap focused window with neighbor
+- `alt + ctrl + h/j/k/l` — warp (reparent in tree)
+- `alt + cmd + h/j/k/l` — resize edges
+- `ctrl + alt + 1..0` — focus space N
+- `ctrl + alt + shift + 1..0` — send window to space N + follow
+- `alt + return` — new Ghostty window
+- `alt + ctrl + r` — reload yabai + skhd
+
+`cmd` alone is reserved for app shortcuts. See `WM.md` for the full table
+and the design rationale.
+
 ### Claude context
 
 `.claude/` holds the memory + transcripts that this dotfiles work was built
@@ -115,7 +144,11 @@ sync.
 ## Tools installed by bootstrap.sh
 
 **Brew formulas:** `neovim`, `ripgrep`, `fd`, `fzf`, `zoxide`, `eza`, `bat`,
-`starship`, `direnv`, `fastfetch`, `yt-dlp`, `jq`, `git`, `llvm`, `node`.
+`starship`, `direnv`, `fastfetch`, `yt-dlp`, `jq`, `git`, `llvm`, `node`,
+`tree-sitter`, `tree-sitter-cli`, `imagemagick`, `gh`.
+
+**WM stack** (from `koekeishiya/formulae` and `FelixKratz/formulae` taps):
+`yabai`, `skhd`, `borders`.
 
 **Brew casks:** `ghostty`, `font-jetbrains-mono-nerd-font`.
 

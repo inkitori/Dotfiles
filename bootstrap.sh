@@ -78,6 +78,75 @@ for c in "${BREW_CASKS[@]}"; do
 done
 
 # ----------------------------------------------------------------------------
+# 3b. Window manager stack (yabai + skhd + borders)
+# ----------------------------------------------------------------------------
+# These live in third-party taps. `brew tap` is idempotent so we can call it
+# unconditionally, then install each formula like the others.
+WM_TAPS=(
+  koekeishiya/formulae        # yabai, skhd
+  FelixKratz/formulae         # borders
+)
+for t in "${WM_TAPS[@]}"; do
+  if brew tap | grep -q "^${t}$"; then
+    ok "tap $t already added"
+  else
+    log "brew tap $t"
+    brew tap "$t"
+  fi
+done
+
+WM_FORMULAS=(
+  yabai                       # tiling window manager
+  skhd                        # hotkey daemon driving yabai
+  borders                     # window border highlighter (FelixKratz/JankyBorders)
+)
+for f in "${WM_FORMULAS[@]}"; do
+  if brew list --formula "$f" >/dev/null 2>&1; then
+    ok "$f already installed"
+  else
+    log "brew install $f"
+    brew install "$f"
+  fi
+done
+
+# Start the services.
+#
+# Two approaches are needed because the koekeishiya formulae no longer ship
+# brew-services support:
+#   - yabai / skhd: their binaries manage their own launchd plist
+#                   (`<bin> --start-service` writes ~/Library/LaunchAgents/...)
+#   - borders:      standard `brew services start`
+#
+# yabai's scripting addition needs a separate manual step (sudoers entry); see
+# comments in yabai/yabairc.
+
+# Detect whether a launchd label is loaded for the current user.
+launchd_loaded() { launchctl list 2>/dev/null | awk '{print $3}' | grep -qx "$1"; }
+
+# launchd labels differ per binary — yabai uses upstream's label, skhd uses
+# koekeishiya's. Check both possibilities so we don't double-start.
+yabai_label="com.asmvik.yabai"
+skhd_label="com.koekeishiya.skhd"
+for svc in yabai skhd; do
+  label_var="${svc}_label"; label="${!label_var}"
+  if launchd_loaded "$label"; then
+    ok "$svc service already loaded ($label)"
+  else
+    log "$svc --start-service"
+    "$svc" --start-service || warn "failed to start $svc — check /tmp/${svc}_${USER}.err.log (common cause: missing Accessibility permission in System Settings)"
+  fi
+done
+
+for svc in borders; do
+  if brew services list | awk -v s="$svc" '$1==s && $2=="started"{found=1} END{exit !found}'; then
+    ok "$svc service already running"
+  else
+    log "brew services start $svc"
+    brew services start "$svc" || warn "failed to start $svc — check 'brew services list'"
+  fi
+done
+
+# ----------------------------------------------------------------------------
 # 4. uv (Python toolchain — replaces pyenv/conda for this user)
 # ----------------------------------------------------------------------------
 if command -v uv >/dev/null 2>&1; then

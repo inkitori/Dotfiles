@@ -12,7 +12,11 @@ TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 LINKS=(
   "nvim:$HOME/.config/nvim"
   "ghostty:$HOME/.config/ghostty"
+  "ghostty/colors.sh:$HOME/.config/colors.sh"   # shared palette (yabai + borders source it)
   "zsh/.zshrc:$HOME/.zshrc"
+  "yabai:$HOME/.config/yabai"
+  "skhd:$HOME/.config/skhd"
+  "borders:$HOME/.config/borders"
   # examples for future use:
   # "starship/starship.toml:$HOME/.config/starship.toml"
 )
